@@ -1,5 +1,6 @@
 using LabFortyMS.Common.Extensions;
 using LabFortyMS.Orders.Data;
+using LabFortyMS.Orders.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,9 +16,13 @@ namespace LabFortyMS.Orders
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-            => services.AddWebService<OrdersDbContext>(this.Configuration);
+            => services
+                .AddWebService<OrdersDbContext>(this.Configuration)
+                .AddTransient<IOrdersService, OrdersService>();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-            => app.UseWebService(env);
+            => app
+                .UseWebService(env)
+                .Initialize<OrdersDbContext>();
     }
 }

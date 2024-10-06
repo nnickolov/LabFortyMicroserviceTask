@@ -1,4 +1,5 @@
 ﻿using LabFortyMS.Common.Data.Models;
+using System.Collections.Generic;
 
 namespace LabFortyMS.Orders.Data.Models
 {
@@ -9,5 +10,7 @@ namespace LabFortyMS.Orders.Data.Models
         public int PriceId { get; set; }
 
         public Price Price { get; set; }
+
+        public ICollection<Order> Orders { get; } = new List<Order>();
     }
 }

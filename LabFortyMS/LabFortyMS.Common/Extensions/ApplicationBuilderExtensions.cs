@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace LabFortyMS.Common.Extensions
@@ -7,8 +9,8 @@ namespace LabFortyMS.Common.Extensions
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseWebService(
-               this IApplicationBuilder app,
-               IWebHostEnvironment env)
+            this IApplicationBuilder app,
+            IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -28,6 +30,20 @@ namespace LabFortyMS.Common.Extensions
                 {
                     endpoints.MapControllers();
                 });
+
+            return app;
+        }
+
+        public static IApplicationBuilder Initialize<TDbContext>(
+            this IApplicationBuilder app)
+            where TDbContext : DbContext
+        {
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            var serviceProvider = serviceScope.ServiceProvider;
+
+            var db = serviceProvider.GetRequiredService<TDbContext>();
+
+            db.Database.Migrate();
 
             return app;
         }

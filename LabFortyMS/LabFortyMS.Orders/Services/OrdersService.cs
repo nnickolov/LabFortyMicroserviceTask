@@ -1,6 +1,7 @@
 ﻿using LabFortyMS.Orders.Data;
 using LabFortyMS.Orders.Data.Models;
 using LabFortyMS.Orders.Services.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -35,7 +36,10 @@ namespace LabFortyMS.Orders.Services
 
         public async Task<int> UpdatOrderAsync(int id, OrderUpdateRequestModel request)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context
+                .Orders
+                .Include(o => o.Price)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
             {
