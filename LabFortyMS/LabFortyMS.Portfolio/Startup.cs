@@ -1,5 +1,6 @@
 using LabFortyMS.Common.Extensions;
 using LabFortyMS.Portfolio.Data;
+using LabFortyMS.Portfolio.Messages;
 using LabFortyMS.Portfolio.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +19,8 @@ namespace LabFortyMS.Portfolio
         public void ConfigureServices(IServiceCollection services)
             => services
                 .AddWebService<PortfolioDbContext>(this.Configuration)
-                .AddTransient<IPortfolioService, PortfolioService>();
+                .AddTransient<IPortfolioService, PortfolioService>()
+                .AddMessaging(this.Configuration, typeof(OrderCreatedConsumer));
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

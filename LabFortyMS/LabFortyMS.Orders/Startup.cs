@@ -1,4 +1,5 @@
 using LabFortyMS.Common.Extensions;
+using LabFortyMS.Common.Services.Messages;
 using LabFortyMS.Orders.Data;
 using LabFortyMS.Orders.Services;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +19,7 @@ namespace LabFortyMS.Orders
         public void ConfigureServices(IServiceCollection services)
             => services
                 .AddWebService<OrdersDbContext>(this.Configuration)
+                .AddMessaging(this.Configuration)
                 .AddTransient<IOrdersService, OrdersService>();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

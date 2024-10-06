@@ -34,6 +34,8 @@ namespace LabFortyMS.Orders.Services
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
 
+            // TODO: Add Outbox pattern
+
             var message = new OrderCreatedMessage
             {
                 UserId = order.UserId,

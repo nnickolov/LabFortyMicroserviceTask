@@ -1,5 +1,6 @@
 ﻿using GreenPipes;
 using LabFortyMS.Common.Services.Identity;
+using LabFortyMS.Common.Services.Messages;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -92,10 +93,10 @@ namespace LabFortyMS.Common.Extensions
 
                     mt.AddBus(context => Bus.Factory.CreateUsingRabbitMq(rmq =>
                     {
-                        rmq.Host("rabbitmq", host =>
+                        rmq.Host("localhost", host =>
                         {
-                            host.Username("rabbitmq");
-                            host.Password("rabbitmq");
+                            host.Username(null);
+                            host.Password(null);
                         });
 
                         rmq.UseHealthCheck(context);
@@ -109,7 +110,8 @@ namespace LabFortyMS.Common.Extensions
                         }));
                     }));
                 })
-                .AddMassTransitHostedService();
+                .AddMassTransitHostedService()
+                .AddTransient<IPublisher, Publisher>();
 
             return services;
         }
