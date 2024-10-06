@@ -1,4 +1,6 @@
-﻿using LabFortyMS.Orders.Data;
+﻿using LabFortyMS.Common.Messages.Orders;
+using LabFortyMS.Common.Services.Messages;
+using LabFortyMS.Orders.Data;
 using LabFortyMS.Orders.Data.Models;
 using LabFortyMS.Orders.Services.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +12,12 @@ namespace LabFortyMS.Orders.Services
     public class OrdersService : IOrdersService
     {
         private readonly OrdersDbContext _context;
+        private readonly IPublisher _publisher;
 
-        public OrdersService(OrdersDbContext context)
+        public OrdersService(OrdersDbContext context, IPublisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<int> CreateOrderAsync(int userId, OrderCreateRequestModel request)
@@ -30,24 +34,15 @@ namespace LabFortyMS.Orders.Services
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
 
-            return order.Id;
-        }
-
-        public async Task<int> UpdatOrderAsync(int id, OrderUpdateRequestModel request)
-        {
-            var order = await _context
-                .Orders
-                .Include(o => o.Price)
-                .FirstOrDefaultAsync(o => o.Id == id);
-
-            if (order == null)
+            var message = new OrderCreatedMessage
             {
-                throw new InvalidOperationException($"Order with id '{id}' does not exist.");
-            }
+                UserId = order.UserId,
+                Ticker = order.Ticker,
+                Quantity = order.Quantity,
+                Price = order.Price
+            };
 
-            order.Price = request.Price;
-
-            await _context.SaveChangesAsync();
+            await _publisher.Publish(message);
 
             return order.Id;
         }

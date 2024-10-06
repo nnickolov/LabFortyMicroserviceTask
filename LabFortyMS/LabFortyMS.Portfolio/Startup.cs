@@ -1,7 +1,8 @@
 using LabFortyMS.Common.Extensions;
+using LabFortyMS.Portfolio.Data;
+using LabFortyMS.Portfolio.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,9 +16,13 @@ namespace LabFortyMS.Portfolio
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-            => services.AddWebService<DbContext>(this.Configuration);
+            => services
+                .AddWebService<PortfolioDbContext>(this.Configuration)
+                .AddTransient<IPortfolioService, PortfolioService>();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-            => app.UseWebService(env);
+            => app
+                .UseWebService(env)
+                .Initialize<PortfolioDbContext>();
     }
 }
