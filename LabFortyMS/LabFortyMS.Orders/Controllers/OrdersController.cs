@@ -16,7 +16,7 @@ namespace LabFortyMS.Orders.Controllers
         }
 
         [HttpPost]
-        [Route("/add/{userId}")]
+        [Route("add/{userId}")]
         public async Task<ActionResult<int>> Create(int userId, [FromBody] OrderCreateRequestModel request)
         {
             return await _ordersService.CreateOrderAsync(userId, request);

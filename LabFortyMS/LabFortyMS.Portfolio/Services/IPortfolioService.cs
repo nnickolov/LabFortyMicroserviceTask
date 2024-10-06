@@ -6,5 +6,7 @@ namespace LabFortyMS.Portfolio.Services
     public interface IPortfolioService
     {
         Task CreateAsync(PortfolioCreateRequestModel request);
+
+        Task<UserPortfolioResponseModel> GetForUserAsync(int userId);
     }
 }

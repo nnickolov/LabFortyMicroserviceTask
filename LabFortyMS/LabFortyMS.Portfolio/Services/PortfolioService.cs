@@ -2,6 +2,7 @@
 using LabFortyMS.Portfolio.Data.Models;
 using LabFortyMS.Portfolio.Services.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LabFortyMS.Portfolio.Services
@@ -33,6 +34,25 @@ namespace LabFortyMS.Portfolio.Services
 
             await _context.Portfolios.AddAsync(portfolio);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<UserPortfolioResponseModel> GetForUserAsync(int userId)
+        {
+            return await _context
+                .Portfolios
+                .Where(p => p.UserId == userId)
+                .Select(p => new UserPortfolioResponseModel
+                {
+                    UserId = p.UserId,
+                    Orders = p.Orders
+                        .Select(o => new PortfolioOrderResponseModel
+                        {
+                            Ticker = o.Ticker,
+                            Total = (decimal)o.Quantity * o.Price,
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
         }
     }
 }
