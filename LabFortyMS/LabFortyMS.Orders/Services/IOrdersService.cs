@@ -1,4 +1,4 @@
-﻿using LabFortyMS.Orders.Services.Model;
+﻿using LabFortyMS.Orders.Services.Models;
 using System.Threading.Tasks;
 
 namespace LabFortyMS.Orders.Services

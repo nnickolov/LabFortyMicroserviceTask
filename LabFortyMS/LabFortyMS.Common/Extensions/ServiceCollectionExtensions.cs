@@ -22,6 +22,7 @@ namespace LabFortyMS.Common.Extensions
                 .AddDatabase<TDbContext>(configuration)
                 .AddApplicationSettings(configuration)
                 .AddTokenAuthentication(configuration)
+                .AddSwaggerGen()
                 .AddControllers();
 
             return services;

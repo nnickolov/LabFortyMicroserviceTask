@@ -6,16 +6,12 @@ namespace LabFortyMS.Orders.Data.Models
     {
         public int UserId { get; set; }
 
-        public int TickerId { get; set; }
-
-        public Ticker Ticker { get; set; }
+        public string Ticker { get; set; }
 
         public double Quantity { get; set; }
 
         public OrderSide Side { get; set; }
 
-        public int PriceId { get; set; }
-
-        public Price Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

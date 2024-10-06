@@ -17,44 +17,10 @@ namespace LabFortyMS.Orders.Data
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<Ticker> Tickers { get; set; }
-
-        public DbSet<Price> Prices { get; set; }
-
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             this.ApplyBaseRules();
             return await base.SaveChangesAsync(cancellationToken);
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Order>(order =>
-            {
-                order
-                    .HasOne(o => o.Ticker)
-                    .WithMany(t => t.Orders)
-                    .HasForeignKey(o => o.TickerId)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                order
-                    .HasOne(o => o.Price)
-                    .WithMany(t => t.Orders)
-                    .HasForeignKey(o => o.PriceId)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            modelBuilder.Entity<Ticker>(ticker =>
-            {
-                ticker
-                    .HasOne(o => o.Price)
-                    .WithMany(t => t.Tickers)
-                    .HasForeignKey(o => o.PriceId)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
         }
 
         private void ApplyBaseRules()

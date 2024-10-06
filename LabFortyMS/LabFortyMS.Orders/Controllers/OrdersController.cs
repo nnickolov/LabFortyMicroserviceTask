@@ -1,6 +1,6 @@
 ﻿using LabFortyMS.Common.Controllers;
 using LabFortyMS.Orders.Services;
-using LabFortyMS.Orders.Services.Model;
+using LabFortyMS.Orders.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

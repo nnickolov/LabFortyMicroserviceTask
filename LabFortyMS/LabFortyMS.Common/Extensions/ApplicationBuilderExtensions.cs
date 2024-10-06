@@ -18,6 +18,7 @@ namespace LabFortyMS.Common.Extensions
             }
 
             app
+                .UseSwagger(env)
                 .UseHttpsRedirection()
                 .UseRouting()
                 .UseCors(options => options
@@ -30,6 +31,20 @@ namespace LabFortyMS.Common.Extensions
                 {
                     endpoints.MapControllers();
                 });
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseSwagger(
+            this IApplicationBuilder app,
+            IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app
+                    .UseSwagger()
+                    .UseSwaggerUI();
+            }
 
             return app;
         }

@@ -1,6 +1,6 @@
 ﻿using LabFortyMS.Orders.Data;
 using LabFortyMS.Orders.Data.Models;
-using LabFortyMS.Orders.Services.Model;
+using LabFortyMS.Orders.Services.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -21,12 +21,11 @@ namespace LabFortyMS.Orders.Services
             var order = new Order
             {
                 UserId = userId,
-                TickerId = request.TickerId,
+                Ticker = request.Ticker,
                 Quantity = request.Quantity,
                 Side = request.Side,
+                Price = 10, // TODO: Add Price
             };
-
-            // TODO: Add Price
 
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
@@ -46,8 +45,7 @@ namespace LabFortyMS.Orders.Services
                 throw new InvalidOperationException($"Order with id '{id}' does not exist.");
             }
 
-            order.Price.Buy = request.PriceBuy;
-            order.Price.Sell = request.PriceSell;
+            order.Price = request.Price;
 
             await _context.SaveChangesAsync();
 

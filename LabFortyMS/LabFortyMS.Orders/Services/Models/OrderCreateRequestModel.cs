@@ -1,10 +1,10 @@
 ﻿using LabFortyMS.Orders.Data.Models;
 
-namespace LabFortyMS.Orders.Services.Model
+namespace LabFortyMS.Orders.Services.Models
 {
     public class OrderCreateRequestModel
     {
-        public int TickerId { get; set; }
+        public string Ticker { get; set; }
 
         public double Quantity { get; set; }
 
