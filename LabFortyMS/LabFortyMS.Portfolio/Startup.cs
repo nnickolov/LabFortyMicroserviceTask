@@ -20,10 +20,14 @@ namespace LabFortyMS.Portfolio
             => services
                 .AddWebService<PortfolioDbContext>(this.Configuration)
                 .AddTransient<IPortfolioService, PortfolioService>()
-                .AddMessaging(this.Configuration, typeof(OrderCreatedConsumer));
+                .AddMessaging(
+                    this.Configuration,
+                    typeof(OrderCreatedConsumer),
+                    typeof(PriceUpdatedConsumer));
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
+                .UseSwagger(env)
                 .UseWebService(env)
                 .Initialize<PortfolioDbContext>();
     }

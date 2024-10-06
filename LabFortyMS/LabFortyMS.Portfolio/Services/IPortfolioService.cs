@@ -7,6 +7,8 @@ namespace LabFortyMS.Portfolio.Services
     {
         Task CreateAsync(PortfolioCreateRequestModel request);
 
+        Task UpdatePricesAsync(decimal price);
+
         Task<UserPortfolioResponseModel> GetForUserAsync(int userId);
     }
 }

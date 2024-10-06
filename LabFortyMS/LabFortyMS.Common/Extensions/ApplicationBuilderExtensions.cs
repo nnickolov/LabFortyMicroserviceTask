@@ -18,7 +18,6 @@ namespace LabFortyMS.Common.Extensions
             }
 
             app
-                .UseSwagger(env)
                 .UseHttpsRedirection()
                 .UseRouting()
                 .UseCors(options => options

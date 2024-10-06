@@ -1,7 +1,7 @@
 using LabFortyMS.Common.Extensions;
+using LabFortyMS.Prices.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +15,11 @@ namespace LabFortyMS.Prices
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-            => services.AddControllers();
+            => services
+                .AddMessaging(this.Configuration)
+                .AddTransient<IPriceService, PriceService>()
+                .AddHangfireService<PriceUpdateHostedService>()
+                .AddControllers();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app.UseWebService(env);

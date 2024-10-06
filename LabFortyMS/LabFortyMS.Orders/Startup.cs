@@ -24,6 +24,7 @@ namespace LabFortyMS.Orders
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
+                .UseSwagger(env)
                 .UseWebService(env)
                 .Initialize<OrdersDbContext>();
     }

@@ -36,6 +36,18 @@ namespace LabFortyMS.Portfolio.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdatePricesAsync(decimal price)
+        {
+            var orders = await _context.Orders.ToListAsync();
+
+            foreach (var order in orders)
+            {
+                order.Price = price;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<UserPortfolioResponseModel> GetForUserAsync(int userId)
         {
             return await _context

@@ -1,4 +1,6 @@
 ﻿using GreenPipes;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using LabFortyMS.Common.Services.Identity;
 using LabFortyMS.Common.Services.Messages;
 using MassTransit;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
@@ -112,6 +115,24 @@ namespace LabFortyMS.Common.Extensions
                 })
                 .AddMassTransitHostedService()
                 .AddTransient<IPublisher, Publisher>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddHangfireService<THostedService>(
+            this IServiceCollection services)
+            where THostedService : class, IHostedService
+        {
+            services
+                .AddHangfire(config => config
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseMemoryStorage());
+
+            services.AddHangfireServer();
+
+            services.AddHostedService<THostedService>();
 
             return services;
         }
