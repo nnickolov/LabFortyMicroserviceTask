@@ -28,7 +28,7 @@ namespace LabFortyMS.Orders.Services
                 Ticker = request.Ticker,
                 Quantity = request.Quantity,
                 Side = request.Side,
-                Price = 10, // TODO: Add Price
+                Price = request.Price
             };
 
             await _context.Orders.AddAsync(order);

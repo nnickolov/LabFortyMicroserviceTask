@@ -9,5 +9,7 @@ namespace LabFortyMS.Orders.Services.Models
         public double Quantity { get; set; }
 
         public OrderSide Side { get; set; }
+
+        public decimal Price { get; set; }
     }
 }
